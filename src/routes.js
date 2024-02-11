@@ -1,4 +1,4 @@
-import Index from "./pages/Index.vue"
+import Index from "./pages/index/Index.vue"
 
 export const routes = [
     {

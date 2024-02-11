@@ -9,3 +9,9 @@ yarn install
 
 yarn vite
 ```
+
+### Env
+
+```env
+VITE_API=<Api url, ex: http://localhost:8000/api>
+```
