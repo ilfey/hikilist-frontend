@@ -1,6 +1,5 @@
 <template>
-    <aside
-        class="fixed z-10 top-0 left-0 border-r border-gray-500 max-w-xs w-full h-screen p-4 bg-gray-200 dark:bg-gray-900">
+    <div class="sticky top-20 border-l border-gray-500 p-4 bg-gray-200 dark:bg-gray-900">
         <h2 class="text-md font-bold">
             Сортировка:
         </h2>
@@ -16,7 +15,7 @@
             </li>
         </ul>
 
-    </aside>
+    </div>
 </template>
 
 <script setup>

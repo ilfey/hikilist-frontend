@@ -40,7 +40,7 @@ export const getAnimes = ({ state, getters, commit }, payload = null) => {
 
     api.get("/animes/" + queries)
         .then(res => commit("setAnimes", res.data))
-        .catch(err => setTimeout(getData, 3000))
+        // .catch(err => setTimeout(getData, 3000))
 
 }
 

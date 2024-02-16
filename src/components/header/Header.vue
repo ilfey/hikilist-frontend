@@ -1,5 +1,5 @@
 <template>
-    <header class="p-4 w-full">
+    <header class="p-4 max-w-5xl w-full mx-auto">
         <nav class="flex items-center justify-between">
             <router-link class="flex items-center justify-center gap-2" to="/">
                 <Logo class="w-8 h-8 duration transition dark:text-white text-black"/>
