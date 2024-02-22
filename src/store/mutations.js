@@ -7,7 +7,7 @@ const setQuery = (state, text) => {
     state.query = text?.trim()
 }
 
-const setOrdering = (state, {isActiveState, key}) => {
+const setOrdering = (state, { isActiveState, key }) => {
     if (isActiveState === null) {
         state.ordering = null
         return
@@ -18,10 +18,18 @@ const setOrdering = (state, {isActiveState, key}) => {
 
 const setAnimes = (state, payload) => {
     state.animes = payload
-    
+
     if (state.animesLoading) {
         state.animesLoading = false
     }
+}
+
+const setCSRF = (state, payload) => {
+    state.csrf = payload
+}
+
+const setIsAuthenticated = (state, payload) => {
+    state.isAuthenticated = payload
 }
 
 export const mutations = {
@@ -29,4 +37,6 @@ export const mutations = {
     setQuery,
     setOrdering,
     setAnimes,
+    setCSRF,
+    setIsAuthenticated,
 }

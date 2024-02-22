@@ -11,5 +11,12 @@
 </template>
 
 <script setup>
+import {useStore} from "vuex"
+
 import Header from "./components/header/Header.vue";
+
+const store = useStore()
+
+store.dispatch("checkAuthentification")
+
 </script>

@@ -23,33 +23,33 @@
                     </h2>
 
                     <div class="space-y-2">
-                        <p v-show="genres" class="font-bold">Жанры:
+                        <p v-if="genres" class="font-bold">Жанры:
                             <span class="font-normal">
                                 {{ genres }}
                             </span>
                         </p>
 
-                        <p v-show="announcement" class="font-bold">Дата анонса:
+                        <p v-if="announcement" class="font-bold">Дата анонса:
                             <span class="font-normal">{{ announcement }}</span>
                         </p>
 
-                        <p v-show="started" class="font-bold">Дата начала показа:
+                        <p v-if="started" class="font-bold">Дата начала показа:
                             <span class="font-normal">{{ started }}</span>
                         </p>
 
-                        <p v-show="anime.episodes" class="font-bold">Количество серий:
+                        <p v-if="anime.episodes" class="font-bold">Количество серий:
                             <span class="font-normal">{{ anime.episodes }}</span>
                         </p>
 
-                        <p v-show="anime.episodes_released" class="font-bold">Количество вышедших серий:
+                        <p v-if="anime.episodes_released" class="font-bold">Количество вышедших серий:
                             <span class="font-normal">{{ anime.episodes }}</span>
                         </p>
 
-                        <p v-show="released" class="font-bold">Дата релиза:
+                        <p v-if="released" class="font-bold">Дата релиза:
                             <span class="font-normal">{{ released }}</span>
                         </p>
 
-                        <p v-show="studios" class="font-bold">Студии:
+                        <p v-if="studios" class="font-bold">Студии:
                             <span class="font-normal">{{ studios }}</span>
                         </p>
                     </div>

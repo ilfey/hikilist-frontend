@@ -8,7 +8,10 @@ const state = {
     ordering: null, // String [-]<column>
     query: null, // String
     animes: null, // Array of animes
-    animesLoading: false // Only boolean
+    animesLoading: false, // Only boolean
+    csrf: null, // String
+    isAuthenticated: null, // Boolean
+    loginLoading: false, // Only boolean
 }
 
 export const store = createStore({

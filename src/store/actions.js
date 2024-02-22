@@ -47,3 +47,30 @@ export const getAnimes = ({ state, getters, commit }, payload = null) => {
 export const setOrdering = ({ commit }, payload) => {
     commit("setOrdering", payload)
 }
+
+export const getCSRF = ({commit}) => {
+    api.get("/accounts/csrf/")
+        .then(res => commit("setCSRF", res.headers["x-csrftoken"]))
+}
+
+export const login = ({state, getters, dispatch}, payload) => {
+    state.loginLoading = true
+
+    api.post("/accounts/login/", payload, {
+        headers: {
+            "X-CSRFToken": getters.csrf,
+        }
+    })
+        .then(() => dispatch("checkAuthentification"))
+}
+
+export const checkAuthentification = ({state, commit}) => {
+    api.get("/accounts/session/")
+        .then(res => commit("setIsAuthenticated", res.data.isAuthenticated))
+        .then(() => state.loginLoading = false)
+}
+
+export const logout = ({dispatch}) => {
+    api.get("/accounts/logout/")
+        .then(() => dispatch("checkAuthentification"))
+}
