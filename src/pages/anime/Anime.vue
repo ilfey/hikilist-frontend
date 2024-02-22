@@ -42,7 +42,7 @@
                         </p>
 
                         <p v-if="anime.episodes_released" class="font-bold">Количество вышедших серий:
-                            <span class="font-normal">{{ anime.episodes }}</span>
+                            <span class="font-normal">{{ anime.episodes_released }}</span>
                         </p>
 
                         <p v-if="released" class="font-bold">Дата релиза:
