@@ -8,7 +8,7 @@
         </h2>
         
 
-        <form class="max-w-xs w-full space-y-4 p-4 bg-gray-800 rounded-lg" @submit.prevent="onSubmit">
+        <form class="max-w-xs w-full space-y-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg" @submit.prevent="onSubmit">
             <div class="space-y-2">
                 <div class="space-y-2">
                     <label className='block transition duration ml-3 text-sm font-bold text-gray-900 dark:text-white'>
