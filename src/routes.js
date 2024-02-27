@@ -1,6 +1,7 @@
 import Index from "./pages/index/Index.vue"
 import Anime from "./pages/anime/Anime.vue"
 import Login from "./pages/login/Login.vue"
+import Lists from "./pages/lists/Lists.vue"
 
 export const routes = [
     {
@@ -17,5 +18,10 @@ export const routes = [
         name: "Login",
         path: "/login",
         component: Login,
+    },
+    {
+        name: "Lists",
+        path: "/lists",
+        component: Lists,
     },
 ];

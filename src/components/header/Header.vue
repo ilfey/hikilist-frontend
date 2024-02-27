@@ -7,7 +7,7 @@
             </router-link>
 
             <div class="flex items-center gap-2">
-                <router-link class="duration transition font-bold hover:text-primary-700" v-for="item in nav"
+                <router-link class="duration transition font-bold hover:text-primary-700" v-for="item in navFiltered"
                     :key="item.name" :to="item.href">
                     {{ item.name }}
                 </router-link>
@@ -21,7 +21,7 @@
                 </router-link>
 
                 <button v-if="store.getters.isAuthenticated" type="button" class="duration transition font-bold hover:text-primary-700" @click="store.dispatch('logout')">
-                    Logout
+                    Выйти
                 </button>
 
                 <button @click="toggleTheme">
@@ -47,6 +47,8 @@ import { nav, rightNav } from "./lib/nav"
 const store = useStore()
 
 const theme = computed(() => store.state.theme)
+
+const navFiltered = computed(() => nav.filter(item => (item.isAuthenticated == null || item.isAuthenticated) && store.getters.isAuthenticated))
 
 const rightNavFiltered = computed(() => rightNav.filter(item => item.isAuthenticated === store.getters.isAuthenticated))
 

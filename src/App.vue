@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import {useStore} from "vuex"
+import { useStore } from "vuex"
 
 import Header from "./components/header/Header.vue";
 

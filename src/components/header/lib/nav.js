@@ -1,13 +1,19 @@
 export const nav = [
     {
-        name: "Home",
+        name: "Главная",
         href: "/",
+        isAuthenticated: null,
+    },
+    {
+        name: "Списки",
+        href: "/lists",
+        isAuthenticated: true,
     },
 ]
 
 export const rightNav = [
     {
-        name: "Login",
+        name: "Войти",
         href: "/login",
         isAuthenticated: false,
     },

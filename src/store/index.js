@@ -12,6 +12,8 @@ const state = {
     csrf: null, // String
     isAuthenticated: null, // Boolean
     loginLoading: false, // Only boolean
+    account: null, // Object {id: number, username: string}
+    userLists: null, // Array<{id: number, title: string, count: number}>
 }
 
 export const store = createStore({

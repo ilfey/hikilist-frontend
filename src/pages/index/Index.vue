@@ -4,7 +4,7 @@
     <main class="p-4 max-w-5xl w-full">
 
         <div class="mb-4 flex gap-4">
-            <Search :placeholder="placeholder" v-model="query" />
+            <Search :placeholder="placeholder || ''" v-model="query" />
 
             <button @click="showSidebar = !showSidebar"
                 class="px-3 py-1 font-semibold text-sm bg-primary-500 hover:bg-primary-700 rounded-lg text-white transition duration">

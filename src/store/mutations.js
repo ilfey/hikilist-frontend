@@ -1,7 +1,3 @@
-const setTheme = (state, theme) => {
-    state.theme = theme
-}
-
 const setQuery = (state, text) => {
     console.log(text);
     state.query = text?.trim()
@@ -24,19 +20,8 @@ const setAnimes = (state, payload) => {
     }
 }
 
-const setCSRF = (state, payload) => {
-    state.csrf = payload
-}
-
-const setIsAuthenticated = (state, payload) => {
-    state.isAuthenticated = payload
-}
-
 export const mutations = {
-    setTheme,
     setQuery,
     setOrdering,
     setAnimes,
-    setCSRF,
-    setIsAuthenticated,
 }
