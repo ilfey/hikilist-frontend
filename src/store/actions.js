@@ -1,4 +1,4 @@
-import { api } from "../api"
+import { api, retry } from "../api"
 
 export const toggleTheme = ({ state }, newTheme) => {
     // Apply theme
@@ -17,31 +17,25 @@ export const toggleTheme = ({ state }, newTheme) => {
     state.theme = newTheme
 }
 
-export const getAnimes = ({ state, getters, commit }, payload = null) => {
-    // Set payload if exists
-    if (payload) {
-        if (payload.ordering) {
-            commit("setOrdering", payload.ordering)
-        }
-
-        if (payload.query !== undefined) {
-            commit("setQuery", payload.query)
-        }
-    }
-
-    // Build queries
-    let queries = [
-        "?format=json",
-        getters.ordering,
-        getters.search,
-    ].filter(i => i !== null).join("&")
-
+export const getAnimes = ({ state, getters, commit }) => {
     state.animesLoading = true
 
-    api.get("/animes/" + queries)
-        .then(res => commit("setAnimes", res.data))
-    // .catch(err => setTimeout(getData, 3000))
+    const getData = (query) => {
+        api.get("/animes/?" + query)
+            .then(res => {
+                const data = res.data
 
+                state.count = data.count
+                state.previous = data.previous
+                state.next = data.next
+
+                commit("setAnimes", data.results)
+            })
+            .catch(err => retry(getData, query))
+    }
+
+    getData(getters.animesQuery)
+    // .catch(err => setTimeout(getData, 3000))
 }
 
 export const setOrdering = ({ commit }, payload) => {

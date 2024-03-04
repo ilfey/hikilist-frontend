@@ -1,6 +1,6 @@
 <template>
     <router-link tag="a" :to="'/animes/' + anime.id" class="flex flex-col rounded-lg bg-gray-100 dark:bg-gray-800 p-4">
-        <img class="max-h-72 h-full" :src="anime.poster" alt="">
+        <img class="rounded h-64 h-full" :src="anime.poster" alt="Постер аниме">
 
         <h2 class="flex-1 my-4 text-base font-bold">
             {{ anime.title }}
@@ -8,7 +8,7 @@
 
         <div class="flex flex-wrap gap-2">
             <span :class="status.class" class="text-xs font-semibold text-white py-1 px-2 rounded-md">{{ status.name }}</span>
-            <span :class="status.class" class="text-xs font-semibold text-white py-1 px-2 rounded-md">{{ anime.format.title }}</span>
+            <span :class="status.class" class="text-xs font-semibold text-white py-1 px-2 rounded-md">{{ anime.format?.title }}</span>
             <span :class="status.class" class="text-xs font-semibold text-white py-1 px-2 rounded-md">{{ anime.episodes_released }}</span>
         </div>
     </router-link>

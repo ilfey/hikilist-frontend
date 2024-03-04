@@ -1,8 +1,20 @@
 // export const theme = state => state.theme
 
-export const ordering = state => state.ordering ? `ordering=${state.ordering}` : null
+export const animesQuery = state => Object.entries(state.params.animes).filter(item => item[1] !== null).map(item => `${item[0]}=${item[1]}`).join("&")
 
-export const search = state => state.query ? `search=${state.query}` : null
+export const animesQueryParams = state => {
+    const builder = (acc, current) => {
+        if (current[1] !== null) {
+            acc[current[0]] = current[1]
+        }
+
+        return acc
+    }
+
+    return Object.entries(state.params.animes).reduce(builder, {})
+}
+
+export const ordering = state => state.ordering ? `ordering=${state.ordering}` : null
 
 export const csrf = state => state.csrf
 

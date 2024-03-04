@@ -1,13 +1,13 @@
-import Index from "./pages/index/Index.vue"
+import Animes from "./pages/animes/Animes.vue"
 import Anime from "./pages/anime/Anime.vue"
 import Login from "./pages/login/Login.vue"
 import Lists from "./pages/lists/Lists.vue"
 
 export const routes = [
     {
-        name: "Index",
+        name: "Animes",
         path: "/",
-        component: Index,
+        component: Animes,
     },
     {
         name: "Anime",

@@ -1,0 +1,1 @@
+export const generatePlaceholder = animes => animes[Math.floor(Math.random() * animes.length)].title

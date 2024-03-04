@@ -10,8 +10,8 @@
                 class="flex gap-2 items-center cursor-pointer select-none duration transition">
                 {{ item.name }}
 
-                <ChevronUp class="w-5 h-5" v-if="item.state === true" />
-                <ChevronDown class="w-5 h-5" v-else-if="item.state === false" />
+                <ChevronUp class="w-5 h-5" v-if="item.state === 'ASC'" />
+                <ChevronDown class="w-5 h-5" v-else-if="item.state === 'DESC'" />
             </li>
         </ul>
 
@@ -33,9 +33,9 @@ const checkOrdering = item => {
     let nextState = null
 
     if (item.state === null) {
-        nextState = true
-    } else if (item.state === true) {
-        nextState = false
+        nextState = "ASC"
+    } else if (item.state === "ASC") {
+        nextState = "DESC"
     }
 
     // Set all states eq null for all order items
@@ -43,13 +43,13 @@ const checkOrdering = item => {
 
     item.state = nextState
 
-    // Update animes
-    store.dispatch("getAnimes", {
-        ordering: {
-            isActiveState: item.state,
-            key: item.key,
-        }
+    store.commit("setAnimesQueryOrdering", {
+        key: item.key,
+        state: item.state,
     })
+
+    // Update animes
+    store.dispatch("getAnimes")
 }
 
 </script>

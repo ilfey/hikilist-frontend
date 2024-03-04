@@ -37,11 +37,11 @@ const route = useRoute()
 
 const loading = ref(true)
 const notFound = ref(false)
-
+const selectedList = ref(null)
 
 const lists = computed(() => store.state.userLists)
 
-const selectedList = ref(null)
+store.commit("setListsQueryFromRoute", route)
 
 watch(lists, (next) => {
     if (!selectedList.value) {
