@@ -17,4 +17,9 @@ export const rightNav = [
         href: "/login",
         isAuthenticated: false,
     },
+    {
+        name: "Регистрация",
+        href: "/register",
+        isAuthenticated: false,
+    },
 ]

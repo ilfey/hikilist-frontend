@@ -6,20 +6,37 @@ import { mutations } from "./mutations"
 const state = {
     theme: localStorage.getItem("theme"), // `light` or `dark`
     animes: null, // Array of animes
-    params: {
+    loading: {
+        animes: false,
+        login: false,
+        register: false,
+    },
+    page: {
         animes: {
-            search: null, // String
-            ordering: null, // String `[-]<column>`
-            page: null, // Number
+            loading: false, // Only boolean
+            params: {
+                search: null, // String
+                ordering: null, // String `[-]<column>`
+                page: null, // Number
+            },
         },
+        login: {
+            loading: false, // Only boolean
+        },
+        register: {
+            loading: false, // Only boolean
+            error: {// Strings
+                login: null, 
+                password: null,
+                request: null,
+            }, 
+        }
     },
     count: null, // Number count of animes
     previous: null, // String to previous page
     next: null, // String to next page
-    animesLoading: false, // Only boolean
     csrf: null, // String
     isAuthenticated: null, // Boolean
-    loginLoading: false, // Only boolean
     account: null, // Object {id: number, username: string}
     userLists: null, // Array<{id: number, title: string, count: number}>
 }

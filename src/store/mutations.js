@@ -1,15 +1,15 @@
 const setAnimes = (state, payload) => {
     state.animes = payload
 
-    if (state.animesLoading) {
-        state.animesLoading = false
+    if (state.page.animes.loading) {
+        state.page.animes.loading = false
     }
 }
 
 const setAnimesParamsFromRoute = (state, route) => {
     const query = route.query
-    
-    state.params.animes = {
+
+    state.page.animes.params = {
         search: query.search || null,
         ordering: query.ordering || null,
         page: query.page || null,
@@ -17,7 +17,7 @@ const setAnimesParamsFromRoute = (state, route) => {
 }
 
 const setAnimesQuerySearch = (state, search) => {
-    state.params.animes = {
+    state.page.animes.params = {
         search: search,
         ordering: null,
         page: null,
@@ -25,24 +25,25 @@ const setAnimesQuerySearch = (state, search) => {
 }
 
 const setAnimesQueryOrdering = (state, { key, state: _state }) => {
-    state.params.animes.page = null
+    const params = state.page.animes.params
+    params.page = null
 
     if (_state === "ASC") {
-        state.params.animes.ordering = key
+        params.ordering = key
     } else if (_state === "DESC") {
-        state.params.animes.ordering = "-" + key
+        params.ordering = "-" + key
     } else {
-        state.params.animes.ordering = null
+        params.ordering = null
     }
 }
 
 const setAnimesQueryPage = (state, page) => {
     if (page === 1) {
-        state.params.animes.page = null
+        state.page.animes.params.page = null
         return
     }
 
-    state.params.animes.page = page
+    state.page.animes.params.page = page
 }
 
 export const mutations = {

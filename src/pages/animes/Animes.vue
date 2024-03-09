@@ -70,10 +70,10 @@ const route = useRoute()
 const showSidebar = ref(false)
 const placeholder = ref(null) // Will be generated
 
-const params = computed(() => store.state.params.animes)
+const params = computed(() => store.state.page.animes.params)
 const animes = computed(() => store.state.animes)
 const pages = computed(() => Math.ceil(store.state.count / 50))
-const loading = computed(() => store.state.animesLoading)
+const loading = computed(() => store.state.page.animes.loading)
 
 
 store.commit("setAnimesParamsFromRoute", route)
