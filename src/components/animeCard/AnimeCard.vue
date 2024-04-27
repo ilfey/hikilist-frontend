@@ -1,16 +1,28 @@
 <template>
-    <router-link tag="a" :to="'/animes/' + anime.id" class="flex flex-col rounded-lg bg-gray-100 dark:bg-gray-800 p-4">
-        <img class="rounded h-64 h-full" :src="anime.poster" alt="Постер аниме">
+    <router-link tag="a" :to="'/animes/' + anime.id"
+        class="flex flex-1 w-full min-w-32 max-w-48 md:min-w-56 md:max-w-64 flex-col rounded-lg bg-gray-100 dark:bg-gray-800 p-4">
+        <div class="flex-1">
+            <div v-if="anime.poster" class="anime-card__poster w-full h-48 md:h-64 rounded"
+                :style="{ 'background-image': `url(${anime.poster})` }">
+            </div>
+        </div>
 
-        <h2 class="flex-1 my-4 text-base font-bold">
+        <h2 class="my-4 text-sm md:text-base font-bold">
             {{ anime.title }}
         </h2>
 
         <div class="flex flex-wrap gap-2">
-            <span :class="status.class" class="text-xs font-semibold text-white py-1 px-2 rounded-md">{{ status.name }}</span>
-            <span :class="status.class" class="text-xs font-semibold text-white py-1 px-2 rounded-md">{{ anime.format?.title }}</span>
-            <span :class="status.class" class="text-xs font-semibold text-white py-1 px-2 rounded-md">{{ anime.episodes_released }}</span>
+            <span :class="status.class" class="text-xs font-semibold text-white py-0.5 px-1 sm:py-1 sm:px-2 rounded-md">
+                {{ status.name }}
+            </span>
+            <span :class="status.class" class="text-xs font-semibold text-white py-0.5 px-1 sm:py-1 sm:px-2 rounded-md">
+                {{ anime.format?.title }}
+            </span>
+            <span :class="status.class" class="text-xs font-semibold text-white py-0.5 px-1 sm:py-1 sm:px-2 rounded-md">
+                {{ anime.episodes_released }}
+            </span>
         </div>
+
     </router-link>
 </template>
 
@@ -34,3 +46,10 @@ const status = computed(() => {
 })
 
 </script>
+
+<style scoped>
+.anime-card__poster {
+    background-size: cover;
+    background-position: center;
+}
+</style>

@@ -1,5 +1,4 @@
-import { router } from "../router"
-import { api, retry } from "../api"
+import { api, autoRetry, handleError, USERNAME_CONFLICT } from "../api"
 
 export const toggleTheme = ({ state }, newTheme) => {
     // Apply theme
@@ -18,48 +17,158 @@ export const toggleTheme = ({ state }, newTheme) => {
     state.theme = newTheme
 }
 
-export const getAnimes = ({ state, getters, commit }) => {
+export const getAnimes = async ({ state, getters, commit }) => {
     state.page.animes.loading = true
 
-    const getData = (query) => {
-        api.get("/animes/?" + query)
-            .then(res => {
-                const data = res.data
+    const req = async (query) => {
+        const res = await api.get("v1/animes/?" + query)
 
-                state.count = data.count
-                state.previous = data.previous
-                state.next = data.next
+        const data = res.data
 
-                commit("setAnimes", data.results)
-            })
-            .catch(err => retry(getData, query))
+        state.count = data.count ?? null
+        state.previous = data.previous ?? null
+        state.next = data.next ?? null
+
+        commit("setAnimes", data.results)
+
+        return res
     }
 
-    getData(getters.animesQuery)
-    // .catch(err => setTimeout(getData, 3000))
+    try {
+        const res = await autoRetry(req, getters.animesQuery)
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.animes.loading = false
+    }
 }
 
-export const setOrdering = ({ commit }, payload) => {
-    commit("setOrdering", payload)
+export const getAnime = async ({ state }, id) => {
+    state.page.anime.loading.details = true
+
+    try {
+        const res = await api.get("v1/animes/" + id + "/")
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.anime.loading.details = false
+    }
 }
 
-export const getCSRF = ({ state }) => {
-    api.get("/accounts/csrf/")
-        .then(res => state.csrf = res.headers["x-csrftoken"])
+export const getRate = async ({ state }, id) => {
+    state.page.anime.loading.rate = true
+
+    try {
+        const res = await api.get("v1/animes/" + id + "/rate/")
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.anime.loading.rate = false
+    }
 }
 
-export const login = ({ state, getters, dispatch }, payload) => {
+export const getLists = async ({ state }) => {
+    state.page.anime.loading.rate = true
+
+    try {
+        const res = await api.get("v1/accounts/" + state.userId + "/lists/")
+
+        // Set lists
+        state.lists = res.data
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.anime.loading.rate = false
+    }
+}
+
+export const createRate = async ({ state }, payload) => {
+    state.page.anime.loading.rate = true
+
+    try {
+        const res = await api.post("v1/rates/", {
+            anime_id: payload.animeId,
+            list_id: payload.listId,
+            rating: payload.rating,
+            rewatched: payload.rewatched,
+            completed: payload.completed,
+        })
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.anime.loading.rate = false
+    }
+}
+
+export const updateRate = async ({ state }, payload) => {
+    state.page.anime.loading.rate = true
+
+    try {
+        const res = await api.patch("v1/rates/" + payload.id + "/", {
+            list_id: payload.listId,
+            rating: payload.rating,
+            rewatched: payload.rewatched,
+            completed: payload.completed,
+        })
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.anime.loading.rate = false
+    }
+}
+
+export const deleteRate = async ({ state }, payload) => {
+    state.page.anime.loading.rate = true
+
+    try {
+        const res = await api.delete("v1/rates/" + payload + "/")
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.anime.loading.rate = false
+    }
+}
+
+export const login = async ({ state, commit }, payload) => {
     state.page.login.loading = true
 
-    api.post("/accounts/login/", payload, {
-        headers: {
-            "X-CSRFToken": getters.csrf,
-        }
-    })
-        .then(() => dispatch("checkAuthentification"))
+    try {
+        const res = await api.post("/v1/auth/login/", payload)
+
+        // Set tokens
+        commit("setTokens", res.data)
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        state.page.login.loading = false
+    }
 }
 
-export const register = ({ state, getters, dispatch }, payload) => {
+export const register = async ({ state, getters, commit }, payload) => {
     const register = state.page.register
 
     // Username must be between 3 and 32
@@ -82,63 +191,59 @@ export const register = ({ state, getters, dispatch }, payload) => {
 
     register.loading = true
 
-    api.post("/accounts/register/", payload, {
-        headers: {
-            "X-CSRFToken": getters.csrf,
-        }
-    })
-        .then(res => {
-            register.loading = false
+    try {
+        const res = await api.post("/v1/auth/register/", { username: payload.username, password: payload.password })
 
-            // Clear errors
-            register.error.login = null
-            register.error.password = null
-            register.error.request = null
+        // Clear errors
+        commit("clearPageErrors", "register")
 
-            // Go to login page
-            router.replace({ name: "Login" })
-        })
-        .catch(err => {
-            register.loading = false
+        // Set tokens
+        commit("setTokens", res.data)
 
-            if (err.response.status === 409) {
-                register.error.request = err.response.data
-            }
-        })
+        return res
+    } catch (err) {
+        console.error(err);
+
+        handleError(err, () => {
+            commit("clearPageErrors", "register")
+
+            register.error.login = "Такой логин уже занят"
+        }, USERNAME_CONFLICT)
+
+        throw err
+    } finally {
+        register.loading = false
+    }
 }
 
-export const checkAuthentification = ({ state, dispatch }) => {
-    api.get("/accounts/session/")
-        .then(res => {
-            state.isAuthenticated = res.data.isAuthenticated
+export const logout = ({ commit }) => {
+    const refresh = document.cookie.split("; ").filter(item => item.startsWith("refresh_token="))[0]?.split("=")[1]
 
-            state.page.login.loading = false
+    if (!refresh) {
+        return
+    }
 
-            if (state.isAuthenticated) {
-                dispatch("getAccount")
-            }
+    // If refresh token is present, send logout request
+    try {
+        const res = api.post("/v1/auth/logout/", {
+            refresh: refresh,
         })
-}
 
-export const logout = ({ dispatch }) => {
-    api.get("/accounts/logout/")
-        .then(() => dispatch("checkAuthentification"))
-}
+        // Clear tokens
+        commit("clearTokens")
 
-export const getAccount = ({ state, dispatch }) => {
-    api.get("/accounts/whoami/")
-        .then(res => {
-            state.account = res.data
-            dispatch("getAccountStats")
-        })
-        .catch(err => {
-            if (err.status = 401) {
-                state.isAuthenticated = false
-            }
-        })
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    }
 }
 
 export const getAccountStats = ({ state }) => {
     api.get("/stats/accounts/" + state.account.id + "/lists/")
         .then(res => state.userLists = res.data.lists)
+}
+
+export const init = ({ commit }) => {
+    commit("setTokens")
 }

@@ -7,8 +7,8 @@
             <Search :placeholder="placeholder || ''" v-model="query" />
 
             <button @click="showSidebar = !showSidebar"
-                class="px-3 py-1 font-semibold text-sm bg-primary-500 hover:bg-primary-700 rounded-lg text-white transition duration">
-                <AdjustmentsHorizontal class="w-6 h-6" />
+                class="shrink-0 w-10 h-10 font-semibold text-sm bg-primary-500 hover:bg-primary-700 rounded-lg text-white transition duration">
+                <AdjustmentsHorizontal class="mx-auto w-6 h-6" />
             </button>
         </div>
 
@@ -21,7 +21,7 @@
         </h2>
 
         <section class="flex flex-wrap justify-center gap-4">
-            <AnimeCard class="w-56" v-for="anime in animes" :key="anime.id" :anime="anime" />
+            <AnimeCard class="" v-for="anime in animes" :key="anime.id" :anime="anime" />
         </section>
 
         <div v-if="store.state.previous || store.state.next" class="mt-4 pr-2 flex items-center justify-center gap-4">
@@ -43,9 +43,7 @@
     </main>
 
     <aside class="flex-1">
-
-        <AnimesSidebar v-show="showSidebar" />
-
+        <AnimesSidebar v-show="showSidebar" @onClose="showSidebar = false" />
     </aside>
 </template>
 
@@ -129,7 +127,6 @@ const changePage = (link) => {
 
     store.dispatch('getAnimes', { url: link })
 }
-
 
 
 // Load animes if animes not exists

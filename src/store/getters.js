@@ -16,6 +16,4 @@ export const animesQueryParams = state => {
 
 export const ordering = state => state.ordering ? `ordering=${state.ordering}` : null
 
-export const csrf = state => state.csrf
-
-export const isAuthenticated = state => state.isAuthenticated
+export const isAuthenticated = state => state.userId !== null

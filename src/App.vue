@@ -17,6 +17,6 @@ import Header from "./components/header/Header.vue";
 
 const store = useStore()
 
-store.dispatch("checkAuthentification")
+store.dispatch("init")
 
 </script>

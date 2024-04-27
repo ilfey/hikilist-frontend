@@ -1,5 +1,9 @@
 <template>
-    <aside class="flex-1"></aside>
+    <aside class="flex-1 p-4">
+        <div v-if="store.getters.isAuthenticated" class="sticky top-4 shrink-0 w-full">
+            <AnimeRate :animeId="anime?.id" />
+        </div>
+    </aside>
 
     <main class="space-y-4 p-4 max-w-5xl w-full">
 
@@ -7,13 +11,14 @@
             Not found
         </h2>
 
-        <section class="flex flex-col gap-4">
-            <article class="flex gap-4 dark:bg-gray-800 bg-gray-100 p-4 rounded-xl duration transition">
+        <section class="">
+            <article
+                class="flex flex-col sm:flex-row gap-4 dark:bg-gray-800 bg-gray-100 p-4 rounded-xl duration transition">
                 <div v-if="anime?.poster" class="">
-                    <img class="rounded-lg w-80" :src="anime.poster" alt="Постер аниме">
+                    <img class="rounded-lg sm:max-w-80" :src="anime.poster" alt="Постер аниме">
                 </div>
 
-                <div :class="loading ? 'min-h-96 rounded-lg bg-gray-300 dark:bg-gray-600 animate-pulse' : 'space-y-4'"
+                <div :class="loading.details ? 'min-h-96 rounded-lg bg-gray-300 dark:bg-gray-600 animate-pulse' : 'space-y-4'"
                     class="flex-1">
                     <h2 v-if="anime?.title" class="text-2xl font-bold">
                         {{ anime.title }}
@@ -58,6 +63,9 @@
                 </div>
             </article>
 
+        </section>
+
+        <section class="flex gap-4">
             <article v-if="anime?.description" class="dark:bg-gray-800 bg-gray-100 p-4 rounded-xl duration transition">
                 <h2 class="mb-4 text-xl font-bold">
                     Описание
@@ -67,7 +75,6 @@
                     {{ anime.description }}
                 </p>
             </article>
-
         </section>
 
         <section class="grid grid-cols-4 gap-4">
@@ -84,61 +91,38 @@ import { ref, computed, watch } from "vue"
 import { useStore } from "vuex"
 import { useRoute } from "vue-router";
 
-import AnimeCard from "../../components/animeCard/AnimeCard.vue";
+import { handleStatus } from "../../api";
 
-import { api, retry } from "../../api"
+import AnimeCard from "../../components/animeCard/AnimeCard.vue";
+import AnimeRate from "../../widgets/animeRate/AnimeRate.vue";
+
 
 const store = useStore()
 const route = useRoute()
 
-const loading = ref(true)
+const loading = computed(() => store.state.page.anime.loading)
 const notFound = ref(false)
-
-const getData = id => {
-    api.get("/animes/" + id + "/?format=json")
-        .then(res => {
-            anime.value = res.data
-            loading.value = false
-        })
-        .catch(err => {
-            if (err.response.status === 404) {
-                loading.value = false
-                notFound.value = true
-                anime.value = null
-                return null
-            }
-
-            // retry(getData, id)
-
-            setTimeout(getData, 3000, id)
-        })
-}
-
-const getAnime = id => {
-    // If store is not null
-    if (store.state.animes) {
-        // Find anime
-        const anime = store.state.animes.find(item => item.id == id)
-
-        // If found
-        if (anime) {
-            loading.value = false
-
-            getData(id)
-
-            return anime
-        }
-    }
-
-    // If store is null or storage don't contains anime
-    return getData(id)
-}
 
 const anime = ref(null)
 
+const getData = id => {
+    store.dispatch("getAnime", id)
+        .then(res => {
+            if (res.data) {
+                anime.value = res.data
+            }
+
+        })
+        .catch(err => {
+            handleStatus(err, () => {
+                notFound.value = true
+            }, 404)
+        })
+}
+
 watch(
     () => route.params,
-    params => anime.value = getAnime(params.id),
+    params => anime.value = getData(params.id),
     { immediate: true },
 )
 

@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue"
+import { ref, computed } from "vue"
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -64,27 +64,27 @@ const router = useRouter()
 
 const loading = computed(() => store.state.page.register.loading)
 const error = computed(() => store.state.page.register.error)
-const isAuthenticated = computed(() => store.getters.isAuthenticated)
 
 const login = ref(null)
 const password = ref(null)
 const confirm = ref(null)
 
-// Riderect
-watch(isAuthenticated, (next) => {
-    if (next === true) {
-        router.replace({ path: '/' })
-    }
-})
 
-const onSubmit = () => store.dispatch("register", {
-    username: login.value,
-    password: password.value,
-    confirm: confirm.value,
-})
-
-if (!store.state.csrf) {
-    store.dispatch("getCSRF")
+const onSubmit = () => {
+    store.dispatch("register", {
+        username: login.value,
+        password: password.value,
+        confirm: confirm.value,
+    })
+        .then(res => {
+            // If res is exists then redirect to home
+            if (res){
+                router.replace({ path: '/' })
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 </script>
