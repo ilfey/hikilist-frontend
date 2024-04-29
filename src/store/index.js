@@ -1,7 +1,7 @@
 import { createLogger, createStore } from "vuex";
 import * as actions from "./actions"
 import * as getters from "./getters"
-import { mutations } from "./mutations"
+import * as mutations from "./mutations"
 
 const state = {
     theme: localStorage.getItem("theme"), // `light` or `dark`
@@ -44,6 +44,7 @@ const state = {
     next: null, // String to next page
     userId: null, // Number
     lists: null, // Array<{id: number, title: string}>
+    toasts: [], // Array<{id:number}>
 }
 
 export const store = createStore({

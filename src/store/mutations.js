@@ -1,4 +1,4 @@
-const setAnimes = (state, payload) => {
+export const setAnimes = (state, payload) => {
     state.animes = payload
 
     if (state.page.animes.loading) {
@@ -6,7 +6,7 @@ const setAnimes = (state, payload) => {
     }
 }
 
-const setAnimesParamsFromRoute = (state, route) => {
+export const setAnimesParamsFromRoute = (state, route) => {
     const query = route.query
 
     state.page.animes.params = {
@@ -16,7 +16,7 @@ const setAnimesParamsFromRoute = (state, route) => {
     }
 }
 
-const setAnimesQuerySearch = (state, search) => {
+export const setAnimesQuerySearch = (state, search) => {
     state.page.animes.params = {
         search: search,
         ordering: null,
@@ -24,7 +24,7 @@ const setAnimesQuerySearch = (state, search) => {
     }
 }
 
-const setAnimesQueryOrdering = (state, { key, state: _state }) => {
+export const setAnimesQueryOrdering = (state, { key, state: _state }) => {
     const params = state.page.animes.params
     params.page = null
 
@@ -37,7 +37,7 @@ const setAnimesQueryOrdering = (state, { key, state: _state }) => {
     }
 }
 
-const setAnimesQueryPage = (state, page) => {
+export const setAnimesQueryPage = (state, page) => {
     if (page === 1) {
         state.page.animes.params.page = null
         return
@@ -46,7 +46,7 @@ const setAnimesQueryPage = (state, page) => {
     state.page.animes.params.page = page
 }
 
-const setUserIdFromToken = (state, token) => {
+export const setUserIdFromToken = (state, token) => {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
@@ -63,7 +63,7 @@ const setUserIdFromToken = (state, token) => {
     state.userId = payload.user_id
 }
 
-const setTokens = (state, payload = null) => {
+export const setTokens = (state, payload = null) => {
     // If payload is present, set it to state and set cookies
     if (payload) {
         document.cookie = `access_token=${payload.access}; path=/; max-age=604800` // max age is 7 days
@@ -83,7 +83,7 @@ const setTokens = (state, payload = null) => {
     }
 }
 
-const clearTokens = (state) => {
+export const clearTokens = (state) => {
     // Clear cookies
     document.cookie = "access_token=; path=/; max-age=0"
     document.cookie = "refresh_token=; path=/; max-age=0"
@@ -92,7 +92,7 @@ const clearTokens = (state) => {
     state.userId = null
 }
 
-const clearPageErrors = (state, payload) => {
+export const clearPageErrors = (state, payload) => {
     // If payload is not present, do nothing
     if (!payload) {
         return
@@ -115,14 +115,21 @@ const clearPageErrors = (state, payload) => {
     }
 }
 
-export const mutations = {
-    setAnimes,
-    setAnimesParamsFromRoute,
-    setAnimesQuerySearch,
-    setAnimesQueryOrdering,
-    setAnimesQueryPage,
-    setTokens,
-    setUserIdFromToken,
-    clearTokens,
-    clearPageErrors,
+// TOASTS
+
+export const createToast = (state, payload) => {
+    const id = state.toasts.length + 1
+
+    state.toasts.push({
+        id,
+        ...payload,
+    })
+
+    return id
+}
+
+export const deleteToast = (state, payload) => {
+    const toastIndex = state.toasts.findIndex(toast => toast.id === payload)
+
+    state.toasts.splice(toastIndex, 1)
 }
