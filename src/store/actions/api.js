@@ -1,21 +1,4 @@
-import { api, autoRetry, handleError, USERNAME_CONFLICT } from "../api"
-
-export const toggleTheme = ({ state }, newTheme) => {
-    // Apply theme
-    const d = document.documentElement
-
-    if (newTheme === "dark") {
-        d.classList.add("dark")
-    } else {
-        d.classList.remove("dark")
-    }
-
-    // Save theme in localStorage
-    localStorage.setItem("theme", newTheme)
-
-    // Mutate store
-    state.theme = newTheme
-}
+import { api, autoRetry, handleError, USERNAME_CONFLICT } from "@/api"
 
 export const getAnimes = async ({ state, getters, commit }) => {
     state.page.animes.loading = true
@@ -252,13 +235,4 @@ export const logout = ({ commit }) => {
         console.error(err);
         throw err
     }
-}
-
-export const getAccountStats = ({ state }) => {
-    api.get("/stats/accounts/" + state.account.id + "/lists/")
-        .then(res => state.userLists = res.data.lists)
-}
-
-export const init = ({ commit }) => {
-    commit("setTokens")
 }

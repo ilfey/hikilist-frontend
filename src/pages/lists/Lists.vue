@@ -72,7 +72,7 @@ import { useStore } from "vuex"
 
 import AnimeCard from "../../components/animeCard/AnimeCard.vue";
 
-import ListBullet from "@assets/ListBullet.svg"
+import ListBullet from "@/assets/ListBullet.svg"
 
 const store = useStore()
 

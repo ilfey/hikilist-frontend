@@ -20,7 +20,7 @@
 <script setup>
 import { ref } from "vue";
 
-import ChevronDown from "@assets/ChevronDown.svg";
+import ChevronDown from "@/assets/ChevronDown.svg";
 
 const props = defineProps({
     text: {

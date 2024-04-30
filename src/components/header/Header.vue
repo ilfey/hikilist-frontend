@@ -107,13 +107,13 @@
 import { computed, ref } from "vue"
 import { useStore } from "vuex"
 
-import Logo from "@assets/Logo.svg"
-import Sun from "@assets/Sun.svg"
-import Moon from "@assets/Moon.svg"
-import Bars3 from "@assets/Bars3.svg"
-import XMark from "@assets/XMark.svg"
+import Logo from "@/assets/Logo.svg"
+import Sun from "@/assets/Sun.svg"
+import Moon from "@/assets/Moon.svg"
+import Bars3 from "@/assets/Bars3.svg"
+import XMark from "@/assets/XMark.svg"
 
-import MobileHeader from "@components/mobileHeader/MobileHeader.vue"
+import MobileHeader from "@/components/mobileHeader/MobileHeader.vue"
 
 import { nav, rightNav } from "./lib/nav"
 

@@ -17,7 +17,7 @@ import { useStore } from "vuex"
 
 import { toastTypes as types } from "./lib"
 
-import XMark from "@assets/XMark.svg"
+import XMark from "@/assets/XMark.svg"
 
 const store = useStore()
 

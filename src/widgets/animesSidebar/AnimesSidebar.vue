@@ -30,10 +30,10 @@
 <script setup>
 import { useStore } from "vuex"
 
-import ChevronDown from "@assets/ChevronDown.svg"
-import ChevronUp from "@assets/ChevronUp.svg"
+import ChevronDown from "@/assets/ChevronDown.svg"
+import ChevronUp from "@/assets/ChevronUp.svg"
 
-import MobileHeader from "@components/mobileHeader/MobileHeader.vue"
+import MobileHeader from "@/components/mobileHeader/MobileHeader.vue"
 
 import { ordering } from "./lib/ordering"
 

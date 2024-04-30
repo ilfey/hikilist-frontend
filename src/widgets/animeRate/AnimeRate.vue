@@ -36,7 +36,7 @@ import Counter from '../../components/counter/Counter.vue';
 import ListSelect from '../../components/listSelect/ListSelect.vue';
 import StarRating from '../../components/starRating/StarRating.vue';
 
-import XMark from "@assets/XMark.svg";
+import XMark from "@/assets/XMark.svg";
 
 
 const props = defineProps({

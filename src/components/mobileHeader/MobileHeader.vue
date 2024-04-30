@@ -23,6 +23,6 @@
 </template>
 
 <script setup>
-import Logo from "@assets/Logo.svg"
-import XMark from "@assets/XMark.svg"
+import Logo from "@/assets/Logo.svg"
+import XMark from "@/assets/XMark.svg"
 </script>
