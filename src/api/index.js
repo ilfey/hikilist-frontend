@@ -16,7 +16,6 @@ export const
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API,
-    withCredentials: true,
     validateStatus: status => status < 400
 })
 

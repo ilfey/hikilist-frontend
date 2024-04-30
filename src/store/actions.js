@@ -61,6 +61,21 @@ export const getAnime = async ({ state }, id) => {
     }
 }
 
+export const getAccountRates = async ({ state }) => {
+    // state.page.anime.loading.rate = true
+
+    try {
+        const res = await api.get("v1/accounts/" + state.userId + "/rates/")
+
+        return res
+    } catch (err) {
+        console.error(err);
+        throw err
+    } finally {
+        // state.page.anime.loading.rate = false
+    }
+}
+
 export const getRate = async ({ state }, id) => {
     state.page.anime.loading.rate = true
 
