@@ -1,5 +1,5 @@
 export const toastTypes = {
     SUCCESS : "SUCCESS",
-    WARN : "WARN",
+    WARNING : "WARNING",
     ERROR : "ERROR",
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-2 items-center p-2 border rounded-xl bg-gray-800"
+  <div class="flex gap-2 items-center p-2 border rounded-xl bg-gray-100 dark:bg-gray-800"
     :class="toastBorderColor">
     <span class="flex-1 text-base">
         {{ toast.detail }}
@@ -28,13 +28,13 @@ const props = defineProps({
 const toastBorderColor = computed(() => {
     switch (props.toast.type) {
         case types.SUCCESS:
-            return "border-green-700";
-        case types.WARN:
-            return "border-orange-700";
+            return "dark:border-green-700 border-green-400";
+        case types.WARNING:
+            return "dark:border-yellow-700 border-orange-400";
         case types.ERROR:
-            return "border-pink-700";
+            return "dark:border-red-700 border-pink-400";
         default:
-            return "border-gray-700";
+            return "dark:border-gray-700 border-gray-400";
     }
 })
 
