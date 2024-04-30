@@ -37,7 +37,10 @@ const state = {
                 password: null,
                 request: null,
             },
-        }
+        },
+        lists: {
+            listId: null, // Number
+        },
     },
     count: null, // Number count of animes
     previous: null, // String to previous page
