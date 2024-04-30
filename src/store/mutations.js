@@ -128,6 +128,7 @@ export const createToast = (state, payload) => {
     // If toast has delay
     if ("delay" in payload) {
         setTimeout(() => {
+            // Delete toast
             state.toasts.splice(length - 1, 1)
         }, payload.delay)
     }
