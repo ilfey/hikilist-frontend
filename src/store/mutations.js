@@ -120,10 +120,17 @@ export const clearPageErrors = (state, payload) => {
 export const createToast = (state, payload) => {
     const id = state.toasts.length + 1
 
-    state.toasts.push({
+    const length = state.toasts.push({
         id,
         ...payload,
     })
+
+    // If toast has delay
+    if ("delay" in payload) {
+        setTimeout(() => {
+            state.toasts.splice(length - 1, 1)
+        }, payload.delay)
+    }
 
     return id
 }
