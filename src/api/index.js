@@ -1,3 +1,7 @@
+import { toastTypes } from "../components/toast/lib"
+
+import { store } from "../store"
+
 import axios from "axios"
 
 const RETRY_LIMIT = 3
@@ -16,15 +20,35 @@ export const api = axios.create({
     validateStatus: status => status < 400
 })
 
-api.interceptors.request.use(config => {
-    if (document.cookie.includes("access_token")) {
-        const token = document.cookie.split("; ").filter(item => item.startsWith("access_token="))[0]?.split("=")[1]
+export const setupInterceptors = () => {
+    api.interceptors.request.use(config => {
+        if (document.cookie.includes("access_token")) {
+            const token = document.cookie.split("; ").filter(item => item.startsWith("access_token="))[0]?.split("=")[1]
+    
+            config.headers.Authorization = `Bearer ${token}`
+        }
+    
+        return config
+    })
 
-        config.headers.Authorization = `Bearer ${token}`
-    }
+    api.interceptors.response.use(
+        res => {
+            // ...
+            
+            return res
+        },
+        err => {
+            if (err?.code === "ERR_NETWORK"){
+                store.commit("createToast", {
+                    type: toastTypes.ERROR,
+                    detail: "Сервис не доступен"
+                })
+            }
 
-    return config
-})
+            return err
+        },
+    )
+}
 
 export const autoRetry = (callback, ...args) => new Promise((resolve, reject) => {
     let count = 0
